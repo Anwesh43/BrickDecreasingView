@@ -4,13 +4,11 @@ package com.anwesh.uiprojects.bdview
  * Created by anweshmishra on 20/07/18.
  */
 
+import android.animation.Animator
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Canvas
-import android.graphics.Path
-import android.graphics.RectF
+import android.graphics.*
 
 fun Canvas.drawAtMid(cb : () -> Unit) {
     val w : Float = width.toFloat()
@@ -151,7 +149,7 @@ class BDView (ctx : Context) : View(ctx) {
 
     data class LinkedBDNode(var i : Int) {
 
-        private var curr : BDNode = BDNode(i + 1)
+        private var curr : BDNode = BDNode(0)
 
         private var dir : Int = 1
 
@@ -170,6 +168,29 @@ class BDView (ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : BDView) {
+
+        private var lbd : LinkedBDNode = LinkedBDNode(0)
+
+        private var animator : BDAnimator = BDAnimator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            lbd.draw(canvas, paint)
+            animator.animate {
+                lbd.update {i, scale ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lbd.startUpdating {
+                animator.start()
+            }
         }
     }
 }
