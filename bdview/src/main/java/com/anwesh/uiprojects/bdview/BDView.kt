@@ -23,7 +23,7 @@ fun Canvas.drawAtMid(cb : () -> Unit) {
 fun Canvas.drawBrickNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val hSize = (h / (2 * nodes))
+    val hSize = (h / (3 * nodes))
     val gap : Float = w / nodes
     save()
     translate(-i * gap, -hSize/2)
