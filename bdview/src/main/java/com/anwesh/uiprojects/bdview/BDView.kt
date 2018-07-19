@@ -9,6 +9,31 @@ import android.view.MotionEvent
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Canvas
+import android.graphics.Path
+import android.graphics.RectF
+
+fun Canvas.drawAtMid(cb : () -> Unit) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    save()
+    translate(w, h/2)
+    cb()
+    restore()
+}
+
+fun Canvas.drawBrickNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val hSize = (h / 2 * nodes)
+    val gap : Float = w / nodes
+    save()
+    translate(-gap - i * gap, -hSize/2)
+    val path : Path = Path()
+    path.addRect(RectF(-gap, 0f, -gap * scale, hSize), Path.Direction.CW)
+    clipPath(path)
+    drawRoundRect(RectF(-gap, 0f, 0F, hSize), gap/4, gap/4, paint)
+    restore()
+}
 
 val nodes : Int = 5
 
