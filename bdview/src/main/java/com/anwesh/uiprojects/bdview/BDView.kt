@@ -23,10 +23,10 @@ fun Canvas.drawAtMid(cb : () -> Unit) {
 fun Canvas.drawBrickNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
-    val hSize = (h / 2 * nodes)
+    val hSize = (h / (2 * nodes))
     val gap : Float = w / nodes
     save()
-    translate(-gap - i * gap, -hSize/2)
+    translate(-i * gap, -hSize/2)
     val path : Path = Path()
     path.addRect(RectF(-gap, 0f, -gap * scale, hSize), Path.Direction.CW)
     clipPath(path)
@@ -157,6 +157,7 @@ class BDView (ctx : Context) : View(ctx) {
         private var dir : Int = 1
 
         fun draw(canvas : Canvas, paint : Paint) {
+            paint.color = Color.parseColor("#FF5722")
             curr.draw(canvas, paint)
         }
 
