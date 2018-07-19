@@ -101,4 +101,51 @@ class BDView (ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class BDNode(var i : Int, val state : BDState = BDState()) {
+
+        private var next : BDNode? = null
+
+        private var prev : BDNode? = null
+
+        init {
+            addNeighbor()
+        }
+
+        fun addNeighbor() {
+            if (i < nodes - 1) {
+                next = BDNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawAtMid {
+                canvas.drawBrickNode(i, state.scale, paint)
+            }
+            next?.draw(canvas, paint)
+        }
+
+        fun update(stopcb : (Int, Float) -> Unit) {
+            state.update {
+                stopcb(i, it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : BDNode {
+            var curr : BDNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
