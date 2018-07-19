@@ -5,6 +5,7 @@ package com.anwesh.uiprojects.bdview
  */
 
 import android.animation.Animator
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
@@ -193,6 +194,14 @@ class BDView (ctx : Context) : View(ctx) {
             lbd.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : BDView {
+            val view : BDView = BDView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
